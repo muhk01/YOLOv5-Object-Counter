@@ -1,5 +1,5 @@
 # YOLOv5-Object-Counter
-Counting Object in Traffic (Cars, Truck, Motorbike, Bicycle, Person)
+Counting Object in Traffic (Cars, Truck, Motorbike, Bicycle, Person, Bus)
 
 # Prerequisite 
 1. Torch >= 1.5
