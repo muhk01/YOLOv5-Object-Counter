@@ -13,20 +13,7 @@ from utils.utils import *
 from pyimagesearch.centroidtracker import CentroidTracker
 from pyimagesearch.trackableobject import TrackableObject
 import time
-MQTT_TOPIC = "v1/devices/me/telemetry"
-mylist = []
-mycount = []
 
-broker_url = ""
-broker_port = 8080
-
-username = ""
-password = '' 
-
-client = mqtt.Client()
-client.username_pw_set(username)
-client.connect(broker_url, broker_port)
-client.loop_start()
 
 class Camera(BaseCamera):
 	def __init__(self):
@@ -134,10 +121,7 @@ class Camera(BaseCamera):
 					for c in det[:, -1].unique():
 						n = (det[:, -1] == c).sum()  # detections per class
 						s += '%g %s, ' % (n, names[int(c)])  # add to string						
-						if(str(names[int(c)]) in listDet):
-							countSend.append('%s' % (names[int(c)]))
-							classSend.append('%g' % (n))
-
+						
 					for *xyxy, conf, cls in det:
 						label = '%s %.2f' % (names[int(cls)], conf)
 						x = xyxy
@@ -242,14 +226,6 @@ class Camera(BaseCamera):
 				cv2.putText(im0, 'Up truck : ' + str(totalUpTruck), (int(width * 0.8) , int(height * 0.3)),
 						cv2.FONT_HERSHEY_SIMPLEX, 1, (100, 0, 100), 2)
 				
-
-				data_set = {"Object": classSend, "Count": countSend}
-				MQTT_MSG = json.dumps(data_set)
-				client.publish(MQTT_TOPIC, MQTT_MSG)
-				print('%sDone. (%.3fs)' % (s, t2 - t1))
-				del classSend[:]
-				del countSend[:]
-				#time.sleep(00.1)
 			yield cv2.imencode('.jpg', cv2.resize(im0,(800,600)))[1].tobytes()
 
 	
