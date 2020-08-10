@@ -17,10 +17,10 @@ MQTT_TOPIC = "v1/devices/me/telemetry"
 mylist = []
 mycount = []
 
-broker_url = "35.247.140.75"
+broker_url = ""
 broker_port = 8080
 
-username = "sJ3C3PraA3NNmt45WCjd"
+username = ""
 password = '' 
 
 client = mqtt.Client()
