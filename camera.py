@@ -314,6 +314,6 @@ class Camera(BaseCamera):
 				#time.sleep(00.1)
 				if pub == False:
 					#proc = subprocess.Popen('ffmpeg -re -f mjpeg -i http://0.0.0.0:5000/video_feed -f lavfi -i anullsrc -c:v libx264 -g 60 -c:a aac -ar 44100 -ac 2 -f flv rtmp://a.rtmp.youtube.com/live2/svc0-zar7-bg32-5e9f-atas', shell=True)
-					proc = subprocess.Popen('ffmpeg -re -f mjpeg -i http://0.0.0.0:5000/video_feed -f lavfi -i anullsrc -c:v libx264 -g 60 -c:a aac -ar 44100 -ac 2 -f flv rtmp://video.ioseries.com/WebRTCApp/466570716716957011783690', shell=True)
+					proc = subprocess.Popen('ffmpeg -re -f mjpeg -i http://0.0.0.0:5000/video_feed -f lavfi -i anullsrc -c:v libx264 -g 60 -c:a aac -ar 44100 -ac 2 -f flv rtmp://your-rtmp-server', shell=True)
 					pub = True
 			yield cv2.imencode('.jpg', cv2.resize(im0,(800,600)))[1].tobytes()
