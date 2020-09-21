@@ -94,8 +94,6 @@ class Camera(BaseCamera):
 
 		# Run inference
 		t0 = time.time()
-		classSend = []
-		countSend = []
 		ct = CentroidTracker()
 		listDet = ['person','bicycle','car','motorcycle','bus','truck']
 
@@ -160,10 +158,6 @@ class Camera(BaseCamera):
 					for c in det[:, -1].unique():
 						n = (det[:, -1] == c).sum()  # detections per class
 						s += '%g %s, ' % (n, names[int(c)])  # add to string                        
-						if(str(names[int(c)]) in listDet):
-							countSend.append('%s' % (names[int(c)]))
-							classSend.append('%g' % (n))
-
 					for *xyxy, conf, cls in det:
 						label = '%s %.2f' % (names[int(cls)], conf)
 						x = xyxy
@@ -305,12 +299,10 @@ class Camera(BaseCamera):
 					elapsed = 0
 					start = time.time()
 					#db.insert(date,ObjListku,objCountUp,objCountDown) #insert ke module database
-					data_set = {"Timestamp" : str(date), "Object": ObjListku, "Count Up": objCountUp, "Count Down" : objCountDown}
+					date = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
+					data_set = {"Timestamp" : str(date), "dPerson": totalDownPerson, "dBicycle": totalDownBicycle, "dCar": totalDownCar, "dBus" : totalDownBus, "dTruck" : totalDownTruck, "uPerson": totalUpPerson, "uBicycle": totalUpBicycle, "uCar": totalUpCar, "uBus" : totalUpBus, "uTruck" : totalUpTruck}
 					MQTT_MSG = json.dumps(data_set)
-					#client.publish(MQTT_TOPIC, MQTT_MSG)
-				#print('%sDone. (%.3fs)' % (s, t2 - t1))
-				del classSend[:]
-				del countSend[:]
+					client.publish(MQTT_TOPIC, MQTT_MSG)
 				#time.sleep(00.1)
 				if pub == False:
 					proc = subprocess.Popen('ffmpeg -re -f mjpeg -i http://0.0.0.0:5000/video_feed -f lavfi -i anullsrc -c:v libx264 -g 60 -c:a aac -ar 44100 -ac 2 -f flv rtmp://your-rtmp-server', shell=True)
